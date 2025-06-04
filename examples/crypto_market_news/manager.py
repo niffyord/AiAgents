@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import json
 import time
 from datetime import datetime
 from pathlib import Path
@@ -55,12 +56,14 @@ class CryptoNewsManager:
 
         output_dir = Path(__file__).parent / "outputs"
         output_dir.mkdir(exist_ok=True)
-        filename = output_dir / f"crypto_news_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md"
+        filename = output_dir / "crypto_news.json"
+        data = {
+            "short_summary": report.short_summary,
+            "markdown_report": report.markdown_report,
+            "follow_up_questions": report.follow_up_questions,
+        }
         with open(filename, "w", encoding="utf-8") as f:
-            f.write(report.markdown_report)
-            f.write("\n\nFollow up questions:\n")
-            for q in report.follow_up_questions:
-                f.write(f"- {q}\n")
+            json.dump(data, f, indent=2)
         print(f"Saved report to {filename}")
 
     async def _perform_searches(self, search_terms: list[str]) -> list[str]:
