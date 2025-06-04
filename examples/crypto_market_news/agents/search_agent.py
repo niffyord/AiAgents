@@ -10,5 +10,6 @@ search_agent = Agent(
     name="CryptoSearchAgent",
     instructions=INSTRUCTIONS,
     tools=[WebSearchTool()],
+    model="gpt-4.1",
     model_settings=ModelSettings(tool_choice="required"),
 )

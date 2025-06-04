@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import asyncio
 import time
+from datetime import datetime
+from pathlib import Path
 
 from rich.console import Console
 
@@ -50,6 +52,16 @@ class CryptoNewsManager:
         print("\n\n=====FOLLOW UP QUESTIONS=====\n\n")
         follow_up_questions = "\n".join(report.follow_up_questions)
         print(f"Follow up questions: {follow_up_questions}")
+
+        output_dir = Path(__file__).parent / "outputs"
+        output_dir.mkdir(exist_ok=True)
+        filename = output_dir / f"crypto_news_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md"
+        with open(filename, "w", encoding="utf-8") as f:
+            f.write(report.markdown_report)
+            f.write("\n\nFollow up questions:\n")
+            for q in report.follow_up_questions:
+                f.write(f"- {q}\n")
+        print(f"Saved report to {filename}")
 
     async def _perform_searches(self, search_terms: list[str]) -> list[str]:
         with custom_span("Search the web"):
