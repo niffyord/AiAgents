@@ -3,7 +3,6 @@ from __future__ import annotations
 import asyncio
 import json
 import time
-from datetime import datetime
 from pathlib import Path
 
 from rich.console import Console
@@ -50,9 +49,6 @@ class CryptoNewsManager:
 
         print("\n\n=====REPORT=====\n\n")
         print(f"Report: {report.markdown_report}")
-        print("\n\n=====FOLLOW UP QUESTIONS=====\n\n")
-        follow_up_questions = "\n".join(report.follow_up_questions)
-        print(f"Follow up questions: {follow_up_questions}")
 
         output_dir = Path(__file__).parent / "outputs"
         output_dir.mkdir(exist_ok=True)
@@ -60,7 +56,6 @@ class CryptoNewsManager:
         data = {
             "short_summary": report.short_summary,
             "markdown_report": report.markdown_report,
-            "follow_up_questions": report.follow_up_questions,
         }
         with open(filename, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2)
